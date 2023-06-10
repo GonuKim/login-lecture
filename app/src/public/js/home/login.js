@@ -20,16 +20,20 @@ loginBtn.addEventListener(
         // stringify() 단순히 오브젝트를 문자형으로 바꿔주는 메서드
         // body를 통해서 데이터를 전달할 때는, http메서드 중에서 POST메서드로 데이터를 전달해주어야 함
         // 또한 header를 통해 내가 전달하는 데이터가 JSON 데이터라고 알려주어야 함(오브젝트로 전달)
+        // 이러한 데이터를 서버에서 받을려면,  login이라는 경로와, POST라는 메서드로 데이터를 받을수있는
+        // API가 마련되어있어야함
         fetch("/login", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify(req)
-        });
-        console.log(JSON.stringify(req));
-        // 이러한 데이터를 서버에서 받을려면,  login이라는 경로와, POST라는 메서드로 데이터를 받을수있는
-        // API가 마련되어있어야함
+            body: JSON.stringify(req),
+        })
+        .then((res) => res.json())
+        // .then((res) => console.log(res));
+        // 위에 줄을 밑에 줄처럼 써도 됨
+        .then(console.log);
+        // then을 한번하면 promise타입이나오고, 여기서 then을 한번더 찍음
     }   
 );
 

@@ -1,5 +1,10 @@
 'use strict'
 
+const users = {
+    id:["qwe", "asd", "zxc"],
+    passwd: ["123", "456", "789"],
+}
+
 // 밑에 주석 처리한 코드를 더 명확하게 표현하기 위해서 output으로 합쳐줌
 const output = {
     home: (req, res) => {
@@ -19,7 +24,22 @@ const output = {
 
 const process = {
     login: (req, res) => {
-        console.log(req.body);
+        const id = req.body.id;
+        const passwd = req.body.passwd;
+
+        if (users.id.includes(id)) {
+            const idx = users.id.indexOf(id);
+            if (users.passwd[idx] === passwd) {
+                return res.json({
+                    success: true,
+                })
+            }
+        }
+
+        return res.json({
+            success: false,
+            msg: "로그인에 실패하셨습니다."
+        });
     },
 };
 
