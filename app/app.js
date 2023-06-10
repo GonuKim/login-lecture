@@ -16,6 +16,11 @@ app.set("views", "./src/views") // 두번째 파라미터로 화면 뷰를 관�
 app.set("view engine", "ejs");
 // html 코드들을 어떤 엔진으로 해석 할지를 정해줄수있음 -> ejs사용(굉장히 많이 사용하는 뷰 엔진중 하나(html이라생각))
 
+app.use('/js',express.static(`${__dirname}/src/public/js`));
+// static 메서드로 정적 경로를 추가해줄거임
+// ${__dirname}는 현재 app.js가 속해있는 디렉토리 위치를 반환
+// login.ejs에서 js폴더로 접근을 하게되면, `${__dirname}/src/public` 이 위치로 접근을 하게 됨
+
 app.use("/", home);
 // use는 미들웨어를 등록해주는 메서드
 
