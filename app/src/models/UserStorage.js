@@ -1,3 +1,4 @@
+// MVC 모델 중 M
 'use strict'
 
 class UserStorage {
@@ -17,6 +18,18 @@ class UserStorage {
         return newUsers;
     }, {});
     return newUsers;
+    }
+
+    static getUserInfo(id) {
+        const users = this.#users; // #users를 받아옴
+        const idx = users.id.indexOf(id);
+        const usersKeys = Object.keys(users); // => [id, passwd, name]
+        const userInfo =  usersKeys.reduce((newUser, info) => {
+            newUser[info] = users[info][idx];
+            return newUser;
+        }, {});
+
+        return userInfo;
     }
 }
 

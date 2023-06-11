@@ -1,6 +1,7 @@
+// MVC 모델 중 C
 'use strict'
 
-const UserStorage = require("../../models/UserStorage");
+const User = require("../../models/User");
 
 // 밑에 주석 처리한 코드를 더 명확하게 표현하기 위해서 output으로 합쳐줌
 const output = {
@@ -21,29 +22,33 @@ const output = {
 
 const process = {
     login: (req, res) => {
-        const id = req.body.id;
-        const passwd = req.body.passwd;
-
-        const users = UserStorage.getUsers("id", "passwd"); 
-
-        const response = {};
-        if (users.id.includes(id)) {
-            const idx = users.id.indexOf(id);
-            if (users.passwd[idx] === passwd) {
-                // return res.json({
-                //     success: true,
-                // })
-                response.success = true;
-                return res.json(response);
-            }
-        }
-        response.success = false;
-        response.msg = "로그인에 실패하셨습니다.";
-        // return res.json({
-        //     success: false,
-        //     msg: "로그인에 실패하셨습니다.",
-        // });
+        const user = new User(req.body);
+        const response = user.login();
         return res.json(response);
+        // const id = req.body.id;
+        // const passwd = req.body.passwd;
+
+        // const users = UserStorage.getUsers("id", "passwd"); 
+
+        // const response = {};
+        // if (users.id.includes(id)) {
+        //     const idx = users.id.indexOf(id);
+        //     if (users.passwd[idx] === passwd) {
+        //         // return res.json({
+        //         //     success: true,
+        //         // })
+        //         response.success = true;
+        //         return res.json(response);
+        //     }
+        // }
+
+        // response.success = false;
+        // response.msg = "로그인에 실패하셨습니다.";
+        // // return res.json({
+        // //     success: false,
+        // //     msg: "로그인에 실패하셨습니다.",
+        // // });
+        // return res.json(response);
     },
 };
 
