@@ -24,8 +24,10 @@ class UserStorage {
         return userInfo;
     }
 
-    static getUsers(...fields) { // ...arg 이렇게 하면 파라미터로 넘긴 변수들이 배열 형태로 들어오게 됨
-        // const users = this.#users;
+    static #getUsers(data, isAll, fields) {
+        const users = JSON.parse(data); // 버퍼 데이터를 파싱해주기
+        if (isAll) return users;
+
         const newUsers = fields.reduce((newUsers, field) => {
             if (users.hasOwnProperty(field)) {
             newUsers[field] = users[field];
@@ -33,24 +35,38 @@ class UserStorage {
             return newUsers;
         }, {});
         return newUsers;
+    }
+
+    static getUsers(isAll, ...fields) { // ...arg 이렇게 하면 파라미터로 넘긴 변수들이 배열 형태로 들어오게 됨
+        return fs
+        .readFile("./src/databases/users.json")
+        .then((data) => {
+            return this.#getUsers(data, isAll, fields);
+        })  
+        .catch((err) => console.error);
     } 
 
     static getUserInfo(id) {
-        return fs.readFile("./src/databases/users.json") // 프로미스를 반환하면 then이라는 메소드에 접근가능, 오류처리는 catch
+        return fs
+        .readFile("./src/databases/users.json") // 프로미스를 반환하면 then이라는 메소드에 접근가능, 오류처리는 catch
         .then((data) => { // 성공했을때    pending은 데이터를 다 읽어오지 못했다는 뜻
             return this.#getUserInfo(data, id);
         })  
         .catch((err) => console.error); // 실패했을때
     }
 
-    static save(userInfo) {
-        // const users = this.#users;
+    static async save(userInfo) {
+        const users = await this.getUsers(true);
+        if (users.id.includes(userInfo.id)) {
+            throw "이미 존재하는 아이디입니다.";
+        }
         users.id.push(userInfo.id);
-        users.name.push(userInfo.name);
         users.passwd.push(userInfo.passwd);
-        console.log(users);
-        return { success: true};
+        users.name.push(userInfo.name);
+        // 데이터 추가
+        fs.writeFile("./src/databases/users.json", JSON.stringify(users));
+        return { success: true };
     }
 }
-
+ 
 module.exports = UserStorage;
