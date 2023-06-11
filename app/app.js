@@ -21,6 +21,7 @@ app.use(express.urlencoded({extended: true}));
 // URL을 통해서 전달되는 데이터에 한글, 공백, 등과 같은 문자가 포함될 경우 제대로 인식되지 않는 문제 해결
 
 app.use('/js',express.static(`${__dirname}/src/public/js`));
+app.use('/css',express.static(`${__dirname}/src/public/css`));
 // static 메서드로 정적 경로를 추가해줄거임
 // ${__dirname}는 현재 app.js가 속해있는 디렉토리 위치를 반환
 // login.ejs에서 js폴더로 접근을 하게되면, `${__dirname}/src/public` 이 위치로 접근을 하게 됨
