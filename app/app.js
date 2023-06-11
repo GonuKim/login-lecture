@@ -5,9 +5,6 @@
 const express = require('express');
 const app = express();
 
-
-
-
 // 라우팅
 const home = require("./src/routes/home")
 // 만든 자바스크립트 파일을 불러오는 거기 때문에 폴더를 상대적으로 명시를 해줘야함

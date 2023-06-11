@@ -30,11 +30,23 @@ loginBtn.addEventListener(
             body: JSON.stringify(req),
         })
         .then((res) => res.json())
+        // then을 한번하면 promise타입이나오고, 여기서 then을 한번더 찍음
+        // promise 타입은 then이라는 method로 접근을 할수있다.
         // .then((res) => console.log(res));
         // 위에 줄을 밑에 줄처럼 써도 됨
-        .then(console.log);
-        // then을 한번하면 promise타입이나오고, 여기서 then을 한번더 찍음
+        // -> 파라미터의 값이 함수 안의 값과 같을 때는 생략할 수 있다.
+        // .then(console.log);
+        .then((res) => {
+            if (res.success) {
+                location.href = "/"
+            } else {
+                alert(res.msg);
+            }
+        })
+        .catch((err) => {
+            console.error("로그인 중 에러발생");
+        });
     }   
 );
-
+ 
 
