@@ -1,3 +1,4 @@
+// 라우팅 파일
 'use strict'
 
 const express = require("express");
@@ -7,6 +8,7 @@ const ctrl = require("./home.ctrl") // home.ctrl 모듈 불러오기 -> hello와
 
 router.get("/", ctrl.output.home);
 router.get("/login", ctrl.output.login);
+router.get("/register", ctrl.output.register);
 // 프론트엔드가 전달한 로그인 데이터를 처리한다는 의미에서 process 오브젝로 만듬
 router.post("/login", ctrl.process.login);
 

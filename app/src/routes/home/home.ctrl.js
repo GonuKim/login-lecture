@@ -9,8 +9,11 @@ const output = {
         res.render("home/index"); // render()함수로 index.ejs파일의 경로로 연결해줌
     },
     login: (req, res) => {
-        res.render("home/login")
+        res.render("home/login");
     },
+    register: (req, res) => {
+        res.render("home/register");
+    }
 };
 // const home = (req, res) => {
 //     res.render("home/index"); // render()함수로 index.ejs파일의 경로로 연결해줌
