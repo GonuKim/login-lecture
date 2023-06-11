@@ -1,27 +1,19 @@
 // MVC 모델 중 M
 'use strict'
 
+//users테이블에 접근해서 데이터를 읽어올수 있어야 하니까 fs(파일시스템)을 불러옴
+const fs = require("fs").promises;
+
 class UserStorage {
     // 클래스 안에 변수를 선언할 때는 const가 필요없다
-    static #users = { // #을 앞에 붙히는 것은 public에서 private로 바꿔주는것 -> 은닉화
-        id: ["qwe", "asd", "zxc"],
-        passwd: ["123", "456", "789"],
-        name: ["가나다", "라마바", "사아자"],
-    };
+    // static #users = { // #을 앞에 붙히는 것은 public에서 private로 바꿔주는것 -> 은닉화
+    //     id: ["qwe", "asd", "zxc"],
+    //     passwd: ["123", "456", "789"],
+    //     name: ["가나다", "라마바", "사아자"],
+    // };
 
-    static getUsers(...fields) { // ...arg 이렇게 하면 파라미터로 넘긴 변수들이 배열 형태로 들어오게 됨
-        const users = this.#users;
-        const newUsers = fields.reduce((newUsers, field) => {
-        if (users.hasOwnProperty(field)) {
-            newUsers[field] = users[field];
-        }
-        return newUsers;
-    }, {});
-    return newUsers;
-    }
-
-    static getUserInfo(id) {
-        const users = this.#users; // #users를 받아옴
+    static #getUserInfo(data, id) {
+        const users = JSON.parse(data);
         const idx = users.id.indexOf(id);
         const usersKeys = Object.keys(users); // => [id, passwd, name]
         const userInfo =  usersKeys.reduce((newUser, info) => {
@@ -30,6 +22,34 @@ class UserStorage {
         }, {});
 
         return userInfo;
+    }
+
+    static getUsers(...fields) { // ...arg 이렇게 하면 파라미터로 넘긴 변수들이 배열 형태로 들어오게 됨
+        // const users = this.#users;
+        const newUsers = fields.reduce((newUsers, field) => {
+            if (users.hasOwnProperty(field)) {
+            newUsers[field] = users[field];
+            }
+            return newUsers;
+        }, {});
+        return newUsers;
+    } 
+
+    static getUserInfo(id) {
+        return fs.readFile("./src/databases/users.json") // 프로미스를 반환하면 then이라는 메소드에 접근가능, 오류처리는 catch
+        .then((data) => { // 성공했을때    pending은 데이터를 다 읽어오지 못했다는 뜻
+            return this.#getUserInfo(data, id);
+        })  
+        .catch((err) => console.error); // 실패했을때
+    }
+
+    static save(userInfo) {
+        // const users = this.#users;
+        users.id.push(userInfo.id);
+        users.name.push(userInfo.name);
+        users.passwd.push(userInfo.passwd);
+        console.log(users);
+        return { success: true};
     }
 }
 
